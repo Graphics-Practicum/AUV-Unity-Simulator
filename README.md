@@ -1,8 +1,5 @@
 # AUV-Unity-Simulator
 
-## Git Dislikes Unity Scenes
-This [file](SceneLock.md) should specify a scene and the current person on that scene. 
-
 ## Installation
 ### Cloning the Repo
 1. `git clone <repo>`
