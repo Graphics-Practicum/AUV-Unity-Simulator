@@ -7,6 +7,8 @@ public class Sub : MonoBehaviour
 {
   // Update is called once per frame
   public int activeCam = 0;
+
+
   void Update()
   {
     int strafe = (Input.GetKey(KeyCode.D) ? 1 : 0) - (Input.GetKey(KeyCode.A) ? 1 : 0);
