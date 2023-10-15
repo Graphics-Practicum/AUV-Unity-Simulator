@@ -10,7 +10,6 @@ public class buoyScript : MonoBehaviour
     {
       print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
       // Visualize the contact point
-      print("HIT");
       Debug.DrawRay(contact.point, contact.normal, Color.red);
     }
   }

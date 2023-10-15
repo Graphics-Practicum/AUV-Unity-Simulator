@@ -8,7 +8,15 @@ public class Sub : MonoBehaviour
   // Update is called once per frame
   public int activeCam = 0;
 
-
+  void OnCollisionStay(Collision collision)
+  {
+    foreach (ContactPoint contact in collision.contacts)
+    {
+      print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
+      // Visualize the contact point
+      Debug.DrawRay(contact.point, contact.normal, Color.red);
+    }
+  }
   void Update()
   {
     int strafe = (Input.GetKey(KeyCode.D) ? 1 : 0) - (Input.GetKey(KeyCode.A) ? 1 : 0);
