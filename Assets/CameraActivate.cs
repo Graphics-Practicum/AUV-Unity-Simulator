@@ -9,7 +9,7 @@ public class CameraActivate : MonoBehaviour
 {
     public int cameraID;
     public Shader shader;
-    Material material;
+    Material material = null;
     public int worldResolution = 4;
     public float worldXLowerBound = -10f;
     public float worldYLowerBound = -10f;
@@ -21,7 +21,7 @@ public class CameraActivate : MonoBehaviour
     private ComputeBuffer buffer;
     Vector3 randomUnitVec()
     {
-        Vector3 vec = new Vector3(UnityEngine.Random.Range(0.0f, 1.0f), UnityEngine.Random.Range(0.0f, 1.0f), UnityEngine.Random.Range(0.0f, 1.0f));
+        Vector3 vec = new Vector3(UnityEngine.Random.Range(0.0f, 1.0f) - 0.5f, UnityEngine.Random.Range(0.0f, 1.0f) - 0.5f, UnityEngine.Random.Range(0.0f, 1.0f) - 0.5f);
         return vec.normalized;
     }
     void Start()
@@ -35,7 +35,6 @@ public class CameraActivate : MonoBehaviour
                 {
                     for (var z = 0; z < worldResolution; z++)
                     {
-                        Debug.Log(z + y * worldResolution + x * worldResolution * worldResolution);
                         squashedPerlin[z + y * worldResolution + x * worldResolution * worldResolution] = randomUnitVec();
                         // perlin[x, y, z] = randomUnitVec();
                     }

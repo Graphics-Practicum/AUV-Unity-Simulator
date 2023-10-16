@@ -35,7 +35,7 @@ Shader "Hidden/CameraShader"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-                float3 view = mul(unity_CameraInvProjection, float4(v.uv * 2 - 1, 0, -1));
+                float3 view = mul(unity_CameraInvProjection, float4(v.uv, 0,-1));
                 o.viewVector = mul(unity_CameraToWorld, float4(view, 0));
                 return o;
             }
@@ -97,7 +97,13 @@ Shader "Hidden/CameraShader"
                 float glg = getGrad(x, y, z, x_greater, y_less, z_greater);
                 float ggl = getGrad(x, y, z, x_greater, y_greater, z_less);
                 float ggg = getGrad(x, y, z, x_greater, y_greater, z_greater);
-                return max(-0.5, min(0.5, interp(interp(interp(lll, gll, dx), interp(lgl, ggl, dx), dy), interp(interp(llg, glg, dx), interp(lgg, ggg, dx), dy), dz))); // man i hope this is right
+                float ll = interp(lll, llg, dz);
+                float lg = interp(lgl, lgg, dz);
+                float gl = interp(gll, glg, dz);
+                float gg = interp(ggl, ggg, dz);
+                float l = interp(ll, lg, dy);
+                float g = interp(gl, gg, dy);
+                return interp(l, g, dx); // man i hope this is right
             }
             fixed4 frag (v2f i) : SV_Target
             {
@@ -106,19 +112,32 @@ Shader "Hidden/CameraShader"
                 float depth = min(50, LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv)) * length(i.viewVector));
                 int steps = int(floor(depth / sampleResolution));
                 float3 viewVecNormalized = i.viewVector / length(i.viewVector);
-                float3 position = _WorldSpaceCameraPos;
-                float totalMurk = 5;
+                float3 position = _WorldSpaceCameraPos + viewVecNormalized;
+                float totalMurk = 0;
                 for(int i = 0; i < 10; i++) {
                     totalMurk += getValueAtCoords(position.x, position.y, position.z);
-                    position += viewVecNormalized * 5;
+                    position += viewVecNormalized * 3;
                 } 
-                col.r = max(col - depth / 25,0);
+                col = max(col - depth / 25,0);
                 col.b = col.b + 0.3;
                 col.g = col.g + 0.3;
-                col = max(col - totalMurk/10, 0);
+                col = min(max(col - totalMurk/250, 0),1);
                 //col.r = (totalMurk/10);
                 //col.b = totalMurk/10;
                 //col.g = totalMurk/10;
+                //float testNegative = 0;
+                //if(position.x <= boundX && position.x >= lowerBoundX && position.y <= boundX && position.y >= lowerBoundY && position.z <= boundZ && position.z >= lowerBoundZ) { 
+                //    testNegative = 1;
+                //}
+                //col.r = testNegative;
+                //col.b = testNegative;
+                //col.g = testNegative;
+                // col.r = abs(getValueAtCoords(position.x, position.y, position.z) / 5);
+                // col.b = abs(getValueAtCoords(position.x, position.y, position.z) / 5);
+                // col.g = abs(getValueAtCoords(position.x, position.y, position.z) / 5);
+                //col.r = 1/length(i.viewVector);
+                //col.b = 1/length(i.viewVector);
+                //col.g = 1/length(i.viewVector);
                 return col;
             }
             ENDCG
