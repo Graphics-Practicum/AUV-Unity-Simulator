@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5190,6 +5190,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraID: 2
   shader: {fileID: 0}
+  worldResolution: 16
+  worldXLowerBound: -10
+  worldYLowerBound: -10
+  worldZLowerBound: -10
+  worldXBound: 10
+  worldYBound: 10
+  worldZBound: 10
 --- !u!1 &400932435
 GameObject:
   m_ObjectHideFlags: 0
@@ -5507,6 +5514,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraID: 1
   shader: {fileID: 0}
+  worldResolution: 16
+  worldXLowerBound: -500
+  worldYLowerBound: -500
+  worldZLowerBound: -500
+  worldXBound: 500
+  worldYBound: 500
+  worldZBound: 500
 --- !u!1 &1097362431
 GameObject:
   m_ObjectHideFlags: 0
@@ -6255,6 +6269,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraID: 0
   shader: {fileID: 4800000, guid: 43fe63eb8022e774eaa4389ab964aed7, type: 3}
+  worldResolution: 4
+  worldXLowerBound: -5
+  worldYLowerBound: -5
+  worldZLowerBound: -5
+  worldXBound: 5
+  worldYBound: 5
+  worldZBound: 5
 --- !u!1 &2107705449
 GameObject:
   m_ObjectHideFlags: 0

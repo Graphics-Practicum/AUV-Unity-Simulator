@@ -11,6 +11,7 @@ public class Perlin3D : MonoBehaviour
     public int worldZBound = 1000; // These are arbitrary and should be set with actual values given 
     public int worldResolution = 16; // These determine the grid sizes for the perlin noise generation, might want to split them up 
     public Vector3[,,] perlin;
+    public Vector3[] squashedPerlin;
 
     // Start is called before the first frame update
     Vector3 randomUnitVec()
@@ -27,7 +28,8 @@ public class Perlin3D : MonoBehaviour
             {
                 for (var z = 0; z < worldResolution; z++)
                 {
-                    perlin[x, y, z] = randomUnitVec();
+                    squashedPerlin.Append(randomUnitVec());
+                    // perlin[x, y, z] = randomUnitVec();
                 }
             }
         }
@@ -71,7 +73,7 @@ public class Perlin3D : MonoBehaviour
         double glg = getGrad(x, y, z, x_greater, y_less, z_greater);
         double ggl = getGrad(x, y, z, x_greater, y_greater, z_less);
         double ggg = getGrad(x, y, z, x_greater, y_greater, z_greater);
-        return interp(interp(interp(lll, gll, x), interp(lgl, ggl, x), y), interp(interp(llg, glg, x), interp(lgg, ggg, x), y), z); // man i hope this is right
+        return interp(interp(interp(lll, gll, dx), interp(lgl, ggl, dx), dy), interp(interp(llg, glg, dx), interp(lgg, ggg, dx), dy), dz); // man i hope this is right
     }
 
     // Update is called once per frame
