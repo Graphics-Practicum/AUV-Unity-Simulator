@@ -17,6 +17,7 @@ public class ControlHelm
     private bool is_positional_control = true;
     private Vector3 position_desire, orientation_desire;
     private Vector3 lateral_thrust_output = Vector3.zero, rotational_thrust_output = Vector3.zero;
+    private bool is_soft = false;
 
     public ControlHelm(
         Rigidbody rigidBody,
@@ -46,11 +47,11 @@ public class ControlHelm
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
-                this.position_desire.z += 1;
+                this.position_desire.z -= 1;
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                this.position_desire.x -= 1;
+                this.position_desire.x += 1;
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
@@ -71,6 +72,10 @@ public class ControlHelm
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 this.orientation_desire.y += 5;
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                this.is_soft = true;
             }
         }
 
@@ -95,10 +100,12 @@ public class ControlHelm
 
     public Vector3 GetLateralThrust()
     {
+        if (this.is_soft) return Vector3.zero;
         return this.lateral_thrust_output;
     }
     public Vector3 GetRotationalThrust()
     {
+        if (this.is_soft) return Vector3.zero;
         return this.rotational_thrust_output;
     }
 }

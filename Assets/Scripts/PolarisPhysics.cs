@@ -34,21 +34,21 @@ public class PolarisPhysics : MonoBehaviour
         this.controlHelm = new ControlHelm(auvBody,
             new PositionLoop(
                 loop_x: new PIDLateral(
-                    kp: 10,
+                    kp: 5,
                     ki: 0,
-                    kd: 70f,
+                    kd: 50f,
                     max_i: 100
                 ),
                 loop_y: new PIDLateral(
-                    kp: 10,
+                    kp: 100,
                     ki: 0,
-                    kd: 0,
+                    kd: 20,
                     max_i: 100
                 ),
                 loop_z: new PIDLateral(
-                    kp: 10,
+                    kp: 5,
                     ki: 0,
-                    kd: 70,
+                    kd: 50,
                     max_i: 100
                 ),
                 clampVal: 300
@@ -82,7 +82,7 @@ public class PolarisPhysics : MonoBehaviour
     void Update()
     {
         float y_force = -PolarisPhysics.AUV_MASS * 9.81f + this.buoyancyForces.GetBuoyancyForce();
-        this.controlHelm.ParseKeyControl(new Vector3(0, y_force, 0));
+        this.controlHelm.ParseKeyControl(new Vector3(0, 0, 0));
     }
 
     void FixedUpdate()

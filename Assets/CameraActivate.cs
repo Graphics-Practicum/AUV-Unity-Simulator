@@ -30,7 +30,7 @@ public class CameraActivate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject sub = GameObject.Find("Sub");
+        GameObject sub = GameObject.Find("polaris");
         if (cameraID == sub.GetComponent<Sub>().activeCam)
         {
             this.GetComponent<Camera>().enabled = true;
