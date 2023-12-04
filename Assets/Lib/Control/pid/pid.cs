@@ -32,7 +32,7 @@ public abstract class PID
         // evaluate PID
         float comp_p = this.kp * error;
         float comp_i = this.ki * this.cum_error;
-        float comp_d = this.kd * (error - this.last_error) / time_delta;
+        float comp_d = this.kd * (error - this.last_error) / Math.Max(time_delta, 0.01f);
 
         this.last_error = error;
 
