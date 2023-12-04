@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class buoyScript : MonoBehaviour
+public class wallScript : MonoBehaviour
 {
   void OnCollisionEnter(Collision collision)
   {
@@ -12,7 +12,7 @@ public class buoyScript : MonoBehaviour
     {
       if(!collided)
       {
-        score.curr_score += 1;
+        score.curr_score -= 1;
         collided = true;
       }
       else
