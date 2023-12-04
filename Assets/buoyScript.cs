@@ -8,9 +8,10 @@ public class buoyScript : MonoBehaviour
   {
     foreach (ContactPoint contact in collision.contacts)
     {
+      score.curr_score += 1;
       print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
       // Visualize the contact point
-      Debug.DrawRay(contact.point, contact.normal, Color.red);
+      //Debug.DrawRay(contact.point, contact.normal, Color.red);
     }
   }
   // Start is called before the first frame update
