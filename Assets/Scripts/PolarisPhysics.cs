@@ -17,8 +17,8 @@ public class PolarisPhysics : MonoBehaviour
     private ControlHelm controlHelm;
 
     /** set this to whatever **/
-    private static float AUV_MASS = 1; // mass in kg
-    private static float AUV_BUOYANCY = 1.2f * 9.81f; // buoyancy in kg
+    private static float AUV_MASS = 100; // mass in kg
+    private static float AUV_BUOYANCY = 130f * 9.81f; // buoyancy in kg
     // Start is called before the first frame update
     void Start()
     {
@@ -32,57 +32,17 @@ public class PolarisPhysics : MonoBehaviour
         this.auvBody.mass = PolarisPhysics.AUV_MASS;
 
         this.dragForces = new DragPassive(auvBody, 1, 1, 1, 0.5f, 0.5f, 0.5f, 977f);
-        this.controlHelm = new ControlHelm(auvBody,
-            new PositionLoop(
-                loop_x: new PIDLateral(
-                    kp: 0,
-                    ki: 0,
-                    kd: 0,
-                    max_i: 100
-                ),
-                loop_y: new PIDLateral(
-                    kp: 0,
-                    ki: 0.5f,
-                    kd: 1f,
-                    max_i: 100
-                ),
-                loop_z: new PIDLateral(
-                    kp: 0,
-                    ki: 0,
-                    kd: 0,
-                    max_i: 100
-                ),
-                clampVal: 300
-            ),
-            new RotationLoop(
-                loop_x: new PIDRotation(
-                    kp: 0f,
-                    ki: 0,
-                    kd: 0,
-                    max_i: 180
-                ),
-                loop_y: new PIDRotation(
-                    kp: 0.001f,
-                    ki: 0,
-                    kd: 0,
-                    max_i: 180
-                ),
-                loop_z: new PIDRotation(
-                    kp: 0f,
-                    ki: 0,
-                    kd: 0,
-                    max_i: 180
-                ),
-                clampVal: 20
-            )
-        );
+        this.controlHelm = new ControlHelm(auvBody, new PIDLateral(
+            0.1f,
+            0.0f,
+            0,
+            10
+        ));
     }
 
     // Update is called once per frame
     void Update()
     {
-        float y_force = -PolarisPhysics.AUV_MASS * 9.81f + this.buoyancyForces.GetBuoyancyForce();
-        this.controlHelm.ParseKeyControl(new Vector3(0, y_force, 0));
     }
 
     void FixedUpdate()
@@ -93,8 +53,14 @@ public class PolarisPhysics : MonoBehaviour
             this.dragForces.ApplyDragForces();
         }
 
-        this.auvBody.AddRelativeForce(this.controlHelm.GetLateralThrust());
-        this.auvBody.AddRelativeTorque(this.controlHelm.GetRotationalThrust());
+        // float y_force = -PolarisPhysics.AUV_MASS * 9.81f + this.buoyancyForces.GetBuoyancyForce();
+        this.controlHelm.ParseKeyControl();
+
+        // Debug.Log(this.controlHelm.GetLateralThrust());
+        // this.auvBody.velocity += this.controlHelm.GetLateralThrust();
+        // this.auvBody.angularVelocity += this.controlHelm.GetRotationalThrust();
+        // // this.auvBody.AddRelativeForce(this.controlHelm.GetLateralThrust());
+        // this.auvBody.AddRelativeTorque(this.controlHelm.GetRotationalThrust());
     }
 }
 

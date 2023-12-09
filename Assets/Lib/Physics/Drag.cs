@@ -7,11 +7,12 @@ using UnityEngine;
     define XZ as plane "top-down" since Y axis to top/down
 */
 
-public class DragPassive {
+public class DragPassive
+{
     private Rigidbody body;
     private float frontBackDragConstant,
         leftRightDragConstant,
-        topDownDragConstant; 
+        topDownDragConstant;
 
     public DragPassive(
         Rigidbody body,
@@ -22,17 +23,19 @@ public class DragPassive {
         float leftRightDragCoeff,
         float topDownDragCoeff,
         float fluidDensity
-    ) {
+    )
+    {
         this.body = body;
 
         this.frontBackDragConstant = 0.5f * frontBackCrossSectionalArea * frontBackDragCoeff * fluidDensity;
         this.leftRightDragConstant = 0.5f * leftRightCrossSectionalArea * leftRightDragCoeff * fluidDensity;
         this.topDownDragConstant = 0.5f * topDownCrossSectionalArea * topDownDragCoeff * fluidDensity;
 
-        this.body.angularDrag = 0.8f;
+        this.body.angularDrag = 2f;
     }
 
-    public void ApplyDragForces() {
+    public void ApplyDragForces()
+    {
         Vector3 velInWorldFrame = body.velocity;
         float x_vel = velInWorldFrame.x;
         float y_vel = velInWorldFrame.y;
