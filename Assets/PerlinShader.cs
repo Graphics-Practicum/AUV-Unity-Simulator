@@ -7,13 +7,13 @@ public class PerlinShader : MonoBehaviour
 {
     public Shader shader;
     // Start is called before the first frame update
-    public int worldResolution = 4;
-    public float worldXLowerBound = -10f;
-    public float worldYLowerBound = -10f;
-    public float worldZLowerBound = -5f;
-    public float worldXBound = 10f;
-    public float worldYBound = 10f;
-    public float worldZBound = 5f;// Arbitrary, set them later
+    public int worldResolution = 10;
+    // public float worldXLowerBound = 0f;
+    // public float worldYLowerBound = 0f;
+    // public float worldZLowerBound = 0f;
+    // public float worldXBound = 1f;
+    // public float worldYBound = 1f;
+    // public float worldZBound = 10f;// Arbitrary, set them later
     private Vector3[] squashedPerlin;
     private ComputeBuffer buffer;
     Vector3 randomUnitVec()
@@ -37,21 +37,35 @@ public class PerlinShader : MonoBehaviour
                     }
                 }
             }
-            buffer = new ComputeBuffer(worldResolution * worldResolution * worldResolution, System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vector3)));
-            buffer.SetData(squashedPerlin);
+            // Renderer[] renderers = GetComponent<Transform>().GetComponentsInChildren<Renderer>(true);
+            // foreach (Renderer r in renderers)
+            for (var i = 0; i < GetComponent<Transform>().childCount; i++)
+            {
+                Renderer r = GetComponent<Transform>().GetChild(i).gameObject.GetComponent<Renderer>();
+                Material material = r.material;
+                material.shader = shader;
+                buffer = new ComputeBuffer(worldResolution * worldResolution * worldResolution, System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vector3)));
+                buffer.SetData(squashedPerlin);
+                material.SetBuffer("perlin", buffer);
+                material.SetInt("xGridMax", worldResolution);
+                material.SetInt("yGridMax", worldResolution);
+                material.SetInt("zGridMax", worldResolution);
+                GetComponent<Transform>().GetChild(i).gameObject.SetActive(true);
 
-            Material material = GetComponent<Renderer>().material;
-            material.shader = shader;
-            material.SetBuffer("perlin", buffer);
-            material.SetFloat("boundX", worldXBound);
-            material.SetFloat("boundY", worldYBound);
-            material.SetFloat("boundZ", worldZBound);
-            material.SetFloat("lowerBoundX", worldXLowerBound);
-            material.SetFloat("lowerBoundY", worldYLowerBound);
-            material.SetFloat("lowerBoundZ", worldZLowerBound);
-            material.SetInt("xGridMax", worldResolution);
-            material.SetInt("yGridMax", worldResolution);
-            material.SetInt("zGridMax", worldResolution);
+                // material.SetFloat("boundX", 0);
+                // material.SetFloat("boundY", 0);
+                // material.SetFloat("boundZ", 0);
+                // material.SetFloat("lowerBoundX", 1);
+                // material.SetFloat("lowerBoundY", 1);
+                // material.SetFloat("lowerBoundZ", 1);
+            }
+            // material.SetFloat("boundX", worldXBound);
+            // material.SetFloat("boundY", worldYBound);
+            // material.SetFloat("boundZ", worldZBound);
+            // material.SetFloat("lowerBoundX", worldXLowerBound);
+            // material.SetFloat("lowerBoundY", worldYLowerBound);
+            // material.SetFloat("lowerBoundZ", worldZLowerBound);
+
         }
     }
 

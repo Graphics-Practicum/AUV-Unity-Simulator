@@ -51,6 +51,7 @@ Shader "Custom/WaterSurfaceShader"
             int yGridMax;
             int zGridMax;
             int sampleResolution = 10;
+            int isColor;
 
             float interp(float start, float end, float along)
             {
@@ -100,7 +101,7 @@ Shader "Custom/WaterSurfaceShader"
                 float gg = interp(ggl, ggg, dz);
                 float l = interp(ll, lg, dy);
                 float g = interp(gl, gg, dy);
-                return interp(l, g, dx); // man i hope this is right
+                return interp(l, g, dx); 
             }
             float transformTime(float time) 
             {
@@ -111,14 +112,26 @@ Shader "Custom/WaterSurfaceShader"
                     return zGridMax - time % zGridMax;
                 }
             }
+            float sigmoid(float i) {
+                return exp(i) / (1+exp(i));
+            }
             void surf (Input IN, inout SurfaceOutputStandard o)
             {
                 // Albedo comes from a texture tinted by color
                 fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-                float i = 0.5 + getValueAtCoords(IN.uv_MainTex.x, IN.uv_MainTex.y, transformTime(_Time[0]))/2; // 1/20 timescale works well
-                o.Albedo.r = 1 - i + c.r * i;
-                o.Albedo.b = 1 - i + c.b * i;
-                o.Albedo.g = 1 - i + c.g * i;
+                float effectiveX = lowerBoundX + IN.uv_MainTex.x * (boundX - lowerBoundX); 
+                float effectiveY = lowerBoundY + IN.uv_MainTex.y * (boundY - lowerBoundY); 
+                float i = 0.5 + getValueAtCoords(effectiveX, effectiveY, transformTime(_Time[0]))/2; // 1/20 timescale works well
+                if(isColor == 1) {
+                    float highlight = sigmoid((i-0.5)*4)/2;
+                    o.Albedo.r = 1 - 2*i+highlight + c.r * i*0.5;
+                    o.Albedo.b = 1 - 2*i+highlight + c.b * i*0.5;
+                    o.Albedo.g = 1 - 2*i+highlight + c.g * i*0.5;
+                    o.Alpha = 0.75;
+                } else {
+                    float j = (i - 0.5) * 7;
+                    o.Alpha = sigmoid(j);
+                }
                 //o.Albedo.r = getValueAtCoords(IN.uv_MainTex.x, IN.uv_MainTex.y, transformTime(_Time[0]));
                 //o.Albedo.g = getValueAtCoords(IN.uv_MainTex.x, IN.uv_MainTex.y, transformTime(_Time[0]));
                 //o.Albedo.b = getValueAtCoords(IN.uv_MainTex.x, IN.uv_MainTex.y, transformTime(_Time[0]));
@@ -126,7 +139,6 @@ Shader "Custom/WaterSurfaceShader"
                 o.Metallic = _Metallic;
                 o.Smoothness = _Glossiness;
                 //o.Alpha = 1;
-                o.Alpha = 0.75;
                 //o.Alpha = c.a;
             }
         #endif

@@ -47,12 +47,15 @@ Shader "Hidden/CameraShader"
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv)) * length(i.viewVector);
-                //if(depth < 1000) {
-                //    int increaseRate = 3;
-                //    col.r = max(col.r - depth * increaseRate / 251,0.251);
-                //    col.g = max(col.g - depth * increaseRate / 541,0.541);
-                //    col.b = max(col.b - depth * increaseRate / 616,0.616);
-                //}
+                if(depth < 1000) {
+                    int increaseRate = 3;
+                    col.r = col.r - depth * increaseRate / 251;
+                    //col.r = max(col.r - depth * increaseRate / 251,0.251);
+                    col.g = col.g + depth * increaseRate / 541;
+                    //col.g = min(col.g + depth * increaseRate / 541,0.541);
+                    col.b = col.b + depth * increaseRate / 616;
+                    //col.b = min(col.b + depth * increaseRate / 616,0.616);
+                }
                 return col;
             }
             ENDCG
