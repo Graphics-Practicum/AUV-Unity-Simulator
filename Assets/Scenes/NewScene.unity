@@ -6036,6 +6036,7 @@ MonoBehaviour:
   startPos: 0
   pool: {fileID: 6899177778390266288, guid: e4b5903fa327a4fdca074defb60575dd, type: 3}
   offset: {x: 43, y: 43}
+  totalSize: {x: 4, y: 5}
 --- !u!4 &1962475335
 Transform:
   m_ObjectHideFlags: 0
