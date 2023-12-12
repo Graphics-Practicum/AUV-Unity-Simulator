@@ -14,6 +14,7 @@ public class ControlHelm
     private Rigidbody rigidbody;
     private PIDLateral heightLoop;
     private float height_desire = 0;
+    private bool is_soft = false;
     public ControlHelm(
         Rigidbody rigidBody,
         PIDLateral heightLoop
@@ -58,10 +59,20 @@ public class ControlHelm
         {
             this.height_desire += 0.1f;
         }
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            this.is_soft = true;
+        }
+        else if (Input.GetKey(KeyCode.Backslash))
+        {
+            this.is_soft = false;
+        }
 
-        float velocity = this.heightLoop.Step(this.rigidbody.position.y, this.height_desire);
-        this.rigidbody.velocity += new Vector3(0, velocity, 0);
-
+        if (!is_soft)
+        {
+            float velocity = this.heightLoop.Step(this.rigidbody.position.y, this.height_desire);
+            this.rigidbody.velocity += new Vector3(0, velocity, 0);
+        }
     }
 
     //     // Process WASD (forward backward left right)
