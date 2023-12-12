@@ -10,10 +10,10 @@ public class PoolGenerator : MonoBehaviour
         public bool[] status = new bool[4];
     }
 
-    private Vector2 size = new Vector2(43,43);
+    private Vector2 size = new Vector2(43, 43);
     private int startPos = 0;
     public GameObject pool;
-    private Vector2 offset  = new Vector2(43,43);
+    private Vector2 offset = new Vector2(43, 43);
     public Vector2 totalSize;
 
     List<Cell> board;
@@ -36,7 +36,7 @@ public class PoolGenerator : MonoBehaviour
             for (int j = 0; j < totalSize.y; j++)
             {
                 var newPool = Instantiate(pool, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<PoolBehavior>();
-                newPool.UpdatePool(board[Mathf.FloorToInt(i + j * size.x)].status);
+                newPool.UpdatePool(board[Mathf.FloorToInt(i + j * totalSize.x)].status);
             }
         }
     }
@@ -45,9 +45,9 @@ public class PoolGenerator : MonoBehaviour
     {
         board = new List<Cell>();
 
-        for (int i = 0; i < size.x; i++)
+        for (int i = 0; i < totalSize.x; i++)
         {
-            for (int j = 0; j < size.y; j++)
+            for (int j = 0; j < totalSize.y; j++)
             {
                 board.Add(new Cell());
             }
@@ -58,7 +58,7 @@ public class PoolGenerator : MonoBehaviour
 
         int k = 0;
 
-        while (k < 10)
+        while (k < totalSize.x * totalSize.y / (1.5))
         {
             k++;
 
@@ -121,22 +121,22 @@ public class PoolGenerator : MonoBehaviour
     List<int> CheckNeighbors(int cell)
     {
         List<int> neighbors = new List<int>();
-        if (cell - size.x >= 0 && !board[Mathf.FloorToInt(cell - size.x)].visited)
+        if (cell - totalSize.x >= 0 && !board[Mathf.FloorToInt(cell - totalSize.x)].visited)
         {
-            neighbors.Add(Mathf.FloorToInt(cell - size.x));
+            neighbors.Add(Mathf.FloorToInt(cell - totalSize.x));
         }
 
-        if (cell + size.x < board.Count && !board[Mathf.FloorToInt(cell + size.x)].visited)
+        if (cell + totalSize.x < board.Count && !board[Mathf.FloorToInt(cell + totalSize.x)].visited)
         {
-            neighbors.Add(Mathf.FloorToInt(cell + size.x));
+            neighbors.Add(Mathf.FloorToInt(cell + totalSize.x));
         }
 
-        if ((cell + 1) % size.x != 0 && !board[Mathf.FloorToInt(cell + 1)].visited)
+        if ((cell + 1) % totalSize.x != 0 && !board[Mathf.FloorToInt(cell + 1)].visited)
         {
             neighbors.Add(Mathf.FloorToInt(cell + 1));
         }
 
-        if (cell % size.x != 0 && !board[Mathf.FloorToInt(cell - 1)].visited)
+        if (cell % totalSize.x != 0 && !board[Mathf.FloorToInt(cell - 1)].visited)
         {
             neighbors.Add(Mathf.FloorToInt(cell - 1));
         }

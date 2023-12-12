@@ -13,7 +13,7 @@ public class ControlHelm
 
     private Rigidbody rigidbody;
     private PIDLateral heightLoop;
-    private float height_desire = 0;
+    private float height_desire = 5;
     private bool is_soft = false;
     public ControlHelm(
         Rigidbody rigidBody,
@@ -59,7 +59,7 @@ public class ControlHelm
         {
             this.height_desire += 0.1f;
         }
-        else if (Input.GetKey(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.K))
         {
             this.is_soft = true;
         }
