@@ -26,17 +26,17 @@ public class PoolGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void GeneratePool()
     {
-        for(int i= 0; i<totalSize.x; i++)
+        for (int i = 0; i < totalSize.x; i++)
         {
-            for(int j= 0; j <totalSize.y; j++)
+            for (int j = 0; j < totalSize.y; j++)
             {
-                var newPool = Instantiate(pool, new Vector3(i*offset.x, 0, -j*offset.y), Quaternion.identity, transform).GetComponent<PoolBehavior>();
-                newPool.UpdatePool(board[Mathf.FloorToInt(i+j*size.x)].status);
+                var newPool = Instantiate(pool, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<PoolBehavior>();
+                newPool.UpdatePool(board[Mathf.FloorToInt(i + j * size.x)].status);
             }
         }
     }
@@ -45,29 +45,29 @@ public class PoolGenerator : MonoBehaviour
     {
         board = new List<Cell>();
 
-        for(int i = 0; i<size.x; i++)
+        for (int i = 0; i < size.x; i++)
         {
-            for(int j = 0;j < size.y; j++)
+            for (int j = 0; j < size.y; j++)
             {
                 board.Add(new Cell());
             }
         }
         int currentCell = startPos;
 
-        Stack<int> path= new Stack<int>();
+        Stack<int> path = new Stack<int>();
 
         int k = 0;
 
-        while(k<10)
+        while (k < 10)
         {
             k++;
 
             board[currentCell].visited = true;
             List<int> neighbors = CheckNeighbors(currentCell);
 
-            if(neighbors.Count == 0)
+            if (neighbors.Count == 0)
             {
-                if(path.Count == 0)
+                if (path.Count == 0)
                 {
                     break;
                 }
@@ -80,11 +80,11 @@ public class PoolGenerator : MonoBehaviour
             {
                 path.Push(currentCell);
 
-                int newCell = neighbors[Random.Range(0,neighbors.Count)];
+                int newCell = neighbors[Random.Range(0, neighbors.Count)];
 
-                if(newCell > currentCell)
+                if (newCell > currentCell)
                 {
-                    if(newCell - 1 == currentCell)
+                    if (newCell - 1 == currentCell)
                     {
                         board[currentCell].status[1] = true;
                         currentCell = newCell;
@@ -99,7 +99,7 @@ public class PoolGenerator : MonoBehaviour
                 }
                 else
                 {
-                    if(newCell - 1 == currentCell)
+                    if (newCell - 1 == currentCell)
                     {
                         board[currentCell].status[3] = true;
                         currentCell = newCell;
@@ -131,14 +131,14 @@ public class PoolGenerator : MonoBehaviour
             neighbors.Add(Mathf.FloorToInt(cell + size.x));
         }
 
-        if ((cell+1) % size.x !=0 && !board[Mathf.FloorToInt(cell + 1)].visited)
+        if ((cell + 1) % size.x != 0 && !board[Mathf.FloorToInt(cell + 1)].visited)
         {
             neighbors.Add(Mathf.FloorToInt(cell + 1));
         }
 
-        if (cell % size.x !=0 && !board[Mathf.FloorToInt(cell - 1)].visited)
+        if (cell % size.x != 0 && !board[Mathf.FloorToInt(cell - 1)].visited)
         {
-            neighbors.Add(Mathf.FloorToInt(cell -1));
+            neighbors.Add(Mathf.FloorToInt(cell - 1));
         }
         return neighbors;
     }
