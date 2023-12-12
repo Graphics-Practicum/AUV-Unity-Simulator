@@ -4,7 +4,7 @@ public class PerlinChild : MonoBehaviour
 {
   public float worldXBound = 1f;
   public float worldYBound = 1f;
-  public float worldZBound = 1f;
+  public float worldZBound = 10f;
   public float worldXLowerBound = 0f;
   public float worldYLowerBound = 0f;
   public float worldZLowerBound = 0f;

@@ -44,10 +44,24 @@ public class PolarisPhysics : MonoBehaviour
     void Update()
     {
     }
-
+    public void toggle_soft()
+    {
+        this.controlHelm.toggle_soft();
+    }
+    public void kill(bool killed)
+    {
+        if (killed)
+        {
+            controlHelm.kill();
+        }
+        else
+        {
+            controlHelm.unkill();
+        }
+    }
     void FixedUpdate()
     {
-        if (this.buoyancyForces.ApplyBuoyancyForce(0))
+        if (this.buoyancyForces.ApplyBuoyancyForce(9.7f))
         {
             // apply water drag forces
             this.dragForces.ApplyDragForces();

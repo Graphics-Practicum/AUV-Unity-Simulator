@@ -29,19 +29,19 @@ public class ControlHelm
     {
         if (Input.GetKey(KeyCode.W))
         {
-            this.rigidbody.AddRelativeForce(new Vector3(1, 0, 0) * 100);
+            this.rigidbody.AddRelativeForce(new Vector3(1, 0, 0) * 1000);
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            this.rigidbody.AddRelativeForce(new Vector3(0, 0, 1) * 100);
+            this.rigidbody.AddRelativeForce(new Vector3(0, 0, 1) * 1000);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            this.rigidbody.AddRelativeForce(new Vector3(1, 0, 0) * -100);
+            this.rigidbody.AddRelativeForce(new Vector3(1, 0, 0) * -1000);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            this.rigidbody.AddRelativeForce(new Vector3(0, 0, 1) * -100);
+            this.rigidbody.AddRelativeForce(new Vector3(0, 0, 1) * -1000);
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -73,6 +73,20 @@ public class ControlHelm
             float velocity = this.heightLoop.Step(this.rigidbody.position.y, this.height_desire);
             this.rigidbody.velocity += new Vector3(0, velocity, 0);
         }
+    }
+
+    public void toggle_soft()
+    {
+        this.is_soft = !is_soft;
+        Debug.Log("Toggle");
+    }
+    public void kill()
+    {
+        this.is_soft = true;
+    }
+    public void unkill()
+    {
+        this.is_soft = false;
     }
 
     //     // Process WASD (forward backward left right)
