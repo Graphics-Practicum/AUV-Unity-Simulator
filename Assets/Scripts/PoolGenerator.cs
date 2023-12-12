@@ -10,10 +10,10 @@ public class PoolGenerator : MonoBehaviour
         public bool[] status = new bool[4];
     }
 
-    public Vector2 size;
-    public int startPos = 0;
+    private Vector2 size = new Vector2(43,43);
+    private int startPos = 0;
     public GameObject pool;
-    public Vector2 offset;
+    private Vector2 offset  = new Vector2(43,43);
     public Vector2 totalSize;
 
     List<Cell> board;
