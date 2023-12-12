@@ -8,16 +8,27 @@ public class PolarisPanCamera : MonoBehaviour
     public Transform lookAt;
     public float distanceFromTarget, lastMouseY;
     private Vector3 lastMousePosition = Vector3.zero, cumulativeRotations = Vector3.zero;
+    private bool lockCamera;
 
     // Start is called before the first frame update
     void Start()
     {
         this.distanceFromTarget = -2f;
         this.lastMouseY = Input.mouseScrollDelta.y;
+        this.lockCamera = false;
     }
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKey(KeyCode.L))
+        {
+            this.lockCamera = true;
+        }
+        if (Input.GetKey(KeyCode.O))
+        {
+            this.lockCamera = false;
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -47,8 +58,18 @@ public class PolarisPanCamera : MonoBehaviour
         // rotation about the y axis
         delta_y += Mathf.Sin(Mathf.Deg2Rad * this.cumulativeRotations.y) * this.distanceFromTarget;
 
-        delta_x += Mathf.Cos(Mathf.Deg2Rad * this.cumulativeRotations.x) * this.distanceFromTarget;
-        delta_z += Mathf.Sin(Mathf.Deg2Rad * this.cumulativeRotations.x) * this.distanceFromTarget;
+        if (this.lockCamera)
+        {
+            Vector3 targetOrientation = this.lookAt.eulerAngles;
+            delta_x += Mathf.Cos(Mathf.Deg2Rad * -targetOrientation.y) * this.distanceFromTarget;
+            delta_z += Mathf.Sin(Mathf.Deg2Rad * -targetOrientation.y) * this.distanceFromTarget;
+
+        }
+        else
+        {
+            delta_x += Mathf.Cos(Mathf.Deg2Rad * this.cumulativeRotations.x) * this.distanceFromTarget;
+            delta_z += Mathf.Sin(Mathf.Deg2Rad * this.cumulativeRotations.x) * this.distanceFromTarget;
+        }
 
 
         Vector3 globalPosition = this.lookAt.position;
